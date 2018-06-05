@@ -44,7 +44,7 @@ userSchema.methods.toJSON = function() {
 userSchema.methods.createToken = function() {
   const user = this;
   const access = 'auth';
-  const token = jwt.sign({_id: user._id.toHexString(), access}, process.env.JWT_SECRET).toString();
+  const token = jwt.sign({_id: user._id, access}, process.env.JWT_SECRET).toString();
   user.tokens.push({access, token});
 
   return user.save().then(() => {

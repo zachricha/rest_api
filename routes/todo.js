@@ -12,7 +12,7 @@ Router
     Todo.find({
       user: req.user.id,
     }).then((todos) => {
-      res.send({todos});
+      return res.send({todos});
     }).catch(e => {
       res.status(400).send(e);
     });
@@ -24,9 +24,9 @@ Router
     });
 
     todo.save().then((todo) => {
-      res.send(todo);
+      return res.send(todo);
     }).catch(e => {
-      res.status(400).send(e);
+      return res.status(400).send(e);
     });
   });
 
@@ -34,7 +34,6 @@ Router
   .route('/todos/:id')
   .get(auth, (req, res) => {
     const id = req.params.id;
-    console.log(id);
 
     if(!ObjectID.isValid(id)) {
       return res.status(404).send();
@@ -45,12 +44,12 @@ Router
       user: req.user.id,
     }).then((todo) => {
       if(!todo) {
-        res.status(404).send();
+        return res.status(404).send();
       };
 
-      res.send(todo);
+      return res.send(todo);
     }).catch(e => {
-      res.status(400).send(e);
+      return res.status(400).send(e);
     });
   })
   .patch(auth, (req, res) => {
@@ -69,12 +68,12 @@ Router
 
     Todo.findOneAndUpdate({_id: id, user: req.user.id}, {$set: req.body}, {new: true}).then((todo) => {
       if(!todo) {
-        res.status(404).send();
+        return res.status(404).send();
       };
 
-      res.send(todo);
+      return res.send(todo);
     }).catch(e => {
-      res.status(400).send(e);
+      return res.status(400).send(e);
     });
   })
   .delete(auth, (req, res) => {
@@ -86,12 +85,12 @@ Router
 
     Todo.findOneAndRemove({_id: id, user: req.user.id}).then((todo) => {
       if(!todo) {
-        res.status(404).send();
+        return res.status(404).send();
       };
 
       res.send(todo);
     }).catch(e => {
-      res.status(400).send(e);
+      return res.status(400).send(e);
     });
   });
 
